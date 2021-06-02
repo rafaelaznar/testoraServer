@@ -33,43 +33,59 @@
 package net.ausiasmarch.TestoraServer.api;
 
 import javax.servlet.http.HttpSession;
-import net.ausiasmarch.TestoraServer.bean.Facturas;
 import net.ausiasmarch.TestoraServer.bean.UsuarioBean;
-
-import net.ausiasmarch.TestoraServer.helper.FacturaMaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/factura")
-public class FacturaController {
+@RequestMapping("/session")
+public class SessionController {
 
     @Autowired
     HttpSession oHttpSession;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> get() throws Exception {
-        UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");
-        if (oUsuarioEntityFromSession == null) {
+    @GetMapping("/")
+    public ResponseEntity<?> check() {
+        UsuarioBean oSessionUsuarioEntity = (UsuarioBean) oHttpSession.getAttribute("usuario");
+        if (oSessionUsuarioEntity == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            if (oUsuarioEntityFromSession.getLogin().equalsIgnoreCase("admin")) {
-
-                FacturaMaker oFacturaMaker = new FacturaMaker();
-                //return ResponseEntity.ok(oFacturaMaker.getFacturas());
-                Facturas oFacturas=oFacturaMaker.getFacturas();
-                return ResponseEntity.status(HttpStatus.OK).body(oFacturas);
-
-            } else {
-                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-            }
+            return new ResponseEntity<UsuarioBean>(oSessionUsuarioEntity, HttpStatus.OK);
         }
     }
 
-    
+    @PostMapping("/")
+    public ResponseEntity<?> login(@RequestBody UsuarioBean oUsuarioBean) {
+        if (oUsuarioBean.getLogin() != null) {
+            if (oUsuarioBean.getPassword() != null) {
+                if (oUsuarioBean.getLogin().equalsIgnoreCase("admin")) {
+                    if (oUsuarioBean.getPassword().equalsIgnoreCase("12345")) {
+                        oHttpSession.setAttribute("usuario", oUsuarioBean);
+                        return new ResponseEntity<UsuarioBean>(oUsuarioBean, HttpStatus.OK);
+                    }
+                }
+                if (oUsuarioBean.getLogin().equalsIgnoreCase("user")) {
+                    if (oUsuarioBean.getPassword().equalsIgnoreCase("54321")) {
+                        oHttpSession.setAttribute("usuario", oUsuarioBean);
+                        return new ResponseEntity<UsuarioBean>(oUsuarioBean, HttpStatus.OK);
+                    }
+                }
+            }
+        }
+        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<?> logout() {
+        oHttpSession.invalidate();
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 
 }

@@ -32,9 +32,14 @@
  */
 package net.ausiasmarch.TestoraServer.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 public class UsuarioBean {
+
     private String login;
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
     public String getLogin() {
@@ -52,5 +57,5 @@ public class UsuarioBean {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }
