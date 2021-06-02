@@ -1,14 +1,14 @@
 package net.ausiasmarch.TestoraServer.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import net.ausiasmarch.TestoraServer.helper.CustomDoubleSerializer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 /**
  *
  * @author rafa
@@ -20,10 +20,11 @@ public class Producto {
 //    @Expose
     private String descripcion;
 //    @Expose
-    @JsonFormat(pattern="%,02f")
+    //@JsonFormat(pattern="%,02f")
+    @JsonSerialize(using = CustomDoubleSerializer.class)
     private Double precioUnitario;
 //    @Expose
-    private TipoProducto tipoProducto;    
+    private TipoProducto tipoProducto;
 
     public Integer getId() {
         return id;
@@ -56,6 +57,5 @@ public class Producto {
     public void setTipoProducto(TipoProducto tipoProducto) {
         this.tipoProducto = tipoProducto;
     }
-    
-    
+
 }

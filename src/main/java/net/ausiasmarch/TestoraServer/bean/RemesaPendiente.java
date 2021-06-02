@@ -5,9 +5,10 @@ package net.ausiasmarch.TestoraServer.bean;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Date;
+import net.ausiasmarch.TestoraServer.helper.CustomDoubleSerializer;
 
 /**
  *
@@ -21,8 +22,9 @@ public class RemesaPendiente {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd", timezone = "GMT")
     private Date fecha;
 //    @Expose
-     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="%.2f")
-    private Double total; 
+    //@JsonFormat(shape = JsonFormat.Shape.NUMBER_FLOAT, pattern = "%.2f")
+    @JsonSerialize(using = CustomDoubleSerializer.class)
+    private Double total;
 
     public Integer getId() {
         return id;
@@ -48,7 +50,4 @@ public class RemesaPendiente {
         this.total = total;
     }
 
-   
-    
-    
 }
