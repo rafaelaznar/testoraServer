@@ -35,17 +35,19 @@ public class FacturaMaker {
 
             oFactura.setIva(Aleatorio.randInt(1, 21));
             
-            Cliente oCliente = new Cliente();
-
-            oCliente.setId(Aleatorio.randInt(1, 1000));
-
-            oCliente.setNombre(Aleatorio.dameNombre());
-            oCliente.setPrimerApellido(Aleatorio.dameApellido());
-            oCliente.setSegundoApellido(Aleatorio.dameApellido());
-            oCliente.setTelefono(Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9));
-            oCliente.setDireccion("Calle " + Aleatorio.dameNombre() + " " + Aleatorio.dameApellido() + ", " + Aleatorio.randStr(0, 9));
-            oCliente.setPoblacion("Valencia");
-            oCliente.setEmail(EliminaAcentos.remove(oCliente.getNombre().substring(2) + oCliente.getPrimerApellido().substring(2) + oCliente.getSegundoApellido().substring(2)) + "@email.com");
+            Cliente oCliente = (new ClienteMaker()).getCliente();
+            
+//            Cliente oCliente = new Cliente();
+//
+//            oCliente.setId(Aleatorio.randInt(1, 1000));
+//
+//            oCliente.setNombre(Aleatorio.dameNombre());
+//            oCliente.setPrimerApellido(Aleatorio.dameApellido());
+//            oCliente.setSegundoApellido(Aleatorio.dameApellido());
+//            oCliente.setTelefono(Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9));
+//            oCliente.setDireccion("Calle " + Aleatorio.dameNombre() + " " + Aleatorio.dameApellido() + ", " + Aleatorio.randStr(0, 9));
+//            oCliente.setPoblacion("Valencia");
+//            oCliente.setEmail(EliminaAcentos.remove(oCliente.getNombre().substring(2) + oCliente.getPrimerApellido().substring(2) + oCliente.getSegundoApellido().substring(2)) + "@email.com");
             
             int numlineas1 = Aleatorio.randInt(1, 6);
             for (int contador3 = 1; contador3 <= numlineas1; contador3++) {
