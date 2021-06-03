@@ -51,7 +51,7 @@ public class FacturaController {
     @Autowired
     HttpSession oHttpSession;
 
-    @GetMapping("/all")
+    @GetMapping("/remesa")
     public ResponseEntity<?> get() throws Exception {
         UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");
         if (oUsuarioEntityFromSession == null) {

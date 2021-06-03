@@ -33,17 +33,20 @@
 package net.ausiasmarch.TestoraServer.api;
 
 import javax.servlet.http.HttpSession;
+import net.ausiasmarch.TestoraServer.bean.Cliente;
 import net.ausiasmarch.TestoraServer.bean.Clientes;
 
 import net.ausiasmarch.TestoraServer.bean.UsuarioBean;
 import net.ausiasmarch.TestoraServer.helper.ClienteMaker;
-
+import net.ausiasmarch.TestoraServer.helper.RemesasMaker;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,8 +57,8 @@ public class ClienteController {
     @Autowired
     HttpSession oHttpSession;
 
-    @GetMapping("/all/{id}")
-    public ResponseEntity<?> all(@PathVariable(value = "id") Long id) throws Exception {   
+    @GetMapping("/all/{number}")
+    public ResponseEntity<?> all(@PathVariable(value = "number") Long number) throws Exception {
         UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");
         if (oUsuarioEntityFromSession == null) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
@@ -64,7 +67,7 @@ public class ClienteController {
 
                 ClienteMaker oClienteMaker = new ClienteMaker();
                 //return ResponseEntity.ok(oFacturaMaker.getFacturas());
-                Clientes oClientes=oClienteMaker.getClientes(id);
+                Clientes oClientes = oClienteMaker.getClientes(number);
                 return ResponseEntity.status(HttpStatus.OK).body(oClientes);
 
             } else {
@@ -73,6 +76,46 @@ public class ClienteController {
         }
     }
 
-    
+    @GetMapping("/")
+    public ResponseEntity<?> one() throws Exception {
+        UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntityFromSession == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oUsuarioEntityFromSession.getLogin().equalsIgnoreCase("admin")) {
+
+                ClienteMaker oClienteMaker = new ClienteMaker();
+                Cliente oCliente = oClienteMaker.getCliente();
+                return ResponseEntity.status(HttpStatus.OK).body(oCliente);
+
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+        }
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> reflect(@RequestBody Cliente oClienteFromRequest) throws Exception {
+        UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");
+        if (oUsuarioEntityFromSession == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } else {
+            if (oUsuarioEntityFromSession.getLogin().equalsIgnoreCase("admin")) {
+                if (oClienteFromRequest.getNombre() != null && oClienteFromRequest.getPrimerApellido() != null && oClienteFromRequest.getSegundoApellido() != null) {
+                    if (oClienteFromRequest.getNombre().length() > 0 && oClienteFromRequest.getPrimerApellido().length() > 0 && oClienteFromRequest.getSegundoApellido().length() > 0) {
+                        RemesasMaker oRemesasMaker = new RemesasMaker();
+                        oClienteFromRequest.setlremesasPendientes(oRemesasMaker.getRemesas());
+                        return ResponseEntity.status(HttpStatus.OK).body(oClienteFromRequest);
+                    } else {
+                        return new ResponseEntity<>(null, HttpStatus.LENGTH_REQUIRED);
+                    }
+                } else {
+                    return new ResponseEntity<>(null, HttpStatus.LENGTH_REQUIRED);
+                }
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            }
+        }
+    }
 
 }

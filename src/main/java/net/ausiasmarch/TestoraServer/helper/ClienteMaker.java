@@ -17,6 +17,7 @@ public class ClienteMaker {
         oCliente.setTelefono(Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9) + Aleatorio.randStr(0, 9));
         oCliente.setDireccion("Calle " + Aleatorio.dameNombre() + " " + Aleatorio.dameApellido() + ", " + Aleatorio.randStr(0, 9));
         oCliente.setPoblacion("Valencia");
+        oCliente.setCodigoPostal(Integer.toString(46000 + (Aleatorio.randInt(0, 99))));
         oCliente.setEmail(EliminaAcentos.remove(oCliente.getNombre().substring(2) + oCliente.getPrimerApellido().substring(2) + oCliente.getSegundoApellido().substring(2)) + "@email.com");
 
         int numlineas1 = Aleatorio.randInt(1, 6);
