@@ -57,6 +57,7 @@ public class ClienteController {
     @Autowired
     HttpSession oHttpSession;
 
+    // localhost:8082/cliente/all/100
     @GetMapping("/all/{number}")
     public ResponseEntity<?> all(@PathVariable(value = "number") Long number) throws Exception {
         UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");
@@ -64,9 +65,7 @@ public class ClienteController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntityFromSession.getLogin().equalsIgnoreCase("admin")) {
-
                 ClienteMaker oClienteMaker = new ClienteMaker();
-                //return ResponseEntity.ok(oFacturaMaker.getFacturas());
                 Clientes oClientes = oClienteMaker.getClientes(number);
                 return ResponseEntity.status(HttpStatus.OK).body(oClientes);
 
@@ -76,6 +75,7 @@ public class ClienteController {
         }
     }
 
+    // localhost:8082/cliente/
     @GetMapping("/")
     public ResponseEntity<?> one() throws Exception {
         UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");
@@ -83,17 +83,27 @@ public class ClienteController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntityFromSession.getLogin().equalsIgnoreCase("admin")) {
-
                 ClienteMaker oClienteMaker = new ClienteMaker();
                 Cliente oCliente = oClienteMaker.getCliente();
                 return ResponseEntity.status(HttpStatus.OK).body(oCliente);
-
             } else {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
         }
     }
 
+    // localhost:8082/cliente/      with json:
+    // {
+    //    "id": 625,
+    //    "nombre": "Pepe",
+    //    "primerApellido": "Serrano",
+    //    "segundoApellido": "Alonso",
+    //    "direccion": "Calle Simón Castillo, 1",
+    //    "poblacion": "Valencia",
+    //    "codigoPostal": "46013",
+    //    "telefono": "85943546",
+    //    "email": "exanderrranoonso@email.com"
+    // }
     @PostMapping("/")
     public ResponseEntity<?> reflect(@RequestBody Cliente oClienteFromRequest) throws Exception {
         UsuarioBean oUsuarioEntityFromSession = (UsuarioBean) oHttpSession.getAttribute("usuario");

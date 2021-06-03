@@ -58,9 +58,7 @@ public class FacturaController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
             if (oUsuarioEntityFromSession.getLogin().equalsIgnoreCase("admin")) {
-
                 FacturaMaker oFacturaMaker = new FacturaMaker();
-                //return ResponseEntity.ok(oFacturaMaker.getFacturas());
                 Facturas oFacturas=oFacturaMaker.getFacturas();
                 return ResponseEntity.status(HttpStatus.OK).body(oFacturas);
 

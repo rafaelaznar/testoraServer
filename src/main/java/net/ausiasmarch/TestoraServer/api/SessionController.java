@@ -51,6 +51,7 @@ public class SessionController {
     @Autowired
     HttpSession oHttpSession;
 
+    // localhost:8082/session/
     @GetMapping("/")
     public ResponseEntity<?> check() {
         UsuarioBean oSessionUsuarioEntity = (UsuarioBean) oHttpSession.getAttribute("usuario");
@@ -61,6 +62,7 @@ public class SessionController {
         }
     }
 
+    // localhost:8082/session/ with {"login":"admin","password": "12345"}
     @PostMapping("/")
     public ResponseEntity<?> login(@RequestBody UsuarioBean oUsuarioBean) {
         if (oUsuarioBean.getLogin() != null) {
@@ -82,6 +84,7 @@ public class SessionController {
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
+    // localhost:8082/session/
     @DeleteMapping("/")
     public ResponseEntity<?> logout() {
         oHttpSession.invalidate();
